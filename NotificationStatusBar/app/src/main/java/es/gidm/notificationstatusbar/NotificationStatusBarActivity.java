@@ -6,9 +6,11 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.media.AudioAttributes;
 import android.net.Uri;
 import android.os.Build;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -43,29 +45,13 @@ public class NotificationStatusBarActivity extends AppCompatActivity {
         boton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*
-                Notification.Builder notificationBuilder =
-                        new Notification.Builder(getApplicationContext())
-                                .setTicker(ticker)
-                                .setSmallIcon(android.R.drawable.stat_sys_warning)
-                                .setAutoCancel(true)
-                                .setContentTitle(titulo)
-                                .setContentText(contenido + " (" + ++contador + ")")
-                                .setContentIntent(contenidoIntent);
-                //.setSound(sonidoURI)
-                //.setVibrate(patronVibracion);
-
-                NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-                notificationManager.notify(ID_NOTIFICACION, notificationBuilder.build());
-                */
-
-
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                    Notification.Builder nb = new Notification.Builder(getApplicationContext(), id)
+                    Notification.Builder nb = (Notification.Builder) new Notification.Builder(getApplicationContext(), id)
                             .setContentTitle(getString(R.string.notificacion)) //Titulo
                             .setContentText(getString(R.string.n_notificacion) + " " + contador) //Contenido
                             .setSmallIcon(R.drawable.ic_warning_black_24dp) //Añado un icono
                             .setAutoCancel(true); //Eliminar al hacer click
+                            //.setStyle(new Notification.InboxStyle()); //Solo aparece el título
 
                     NotificationManager mManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
                     mManager.notify(101, nb.build());
@@ -83,6 +69,10 @@ public class NotificationStatusBarActivity extends AppCompatActivity {
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
             NotificationChannel channel = new NotificationChannel(id, titulo, importance);
             channel.setDescription(contenido);
+            channel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
+            channel.setLightColor(Color.BLUE);
+            channel.setSound(sonidoURI, new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_NOTIFICATION).build());
+
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         } else {
