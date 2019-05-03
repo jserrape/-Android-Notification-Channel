@@ -18,20 +18,15 @@ import android.widget.Button;
 import android.widget.Toast;
 
 public class NotificationStatusBarActivity extends AppCompatActivity {
-    private static final int ID_NOTIFICACION = 2;
-
 
     private int contador = 1;
 
     private final String id = "123";
 
-    private final String ticker = "Un mensaje de notificación largo para que se divida en varias líneas";
     private final String titulo = "Notificación";
     private final String contenido = "Has recibido una notificación";
 
-
     private Uri sonidoURI = Uri.parse("android.resource://es.gidm.notificationstatusbar/" + R.raw.ding);
-    private long[] patronVibracion = {0, 200, 200, 300};
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
